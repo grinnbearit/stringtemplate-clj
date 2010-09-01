@@ -1,0 +1,49 @@
+# stringtemplate-clj
+
+A wrapper for stringtemplate http://www.stringtemplate.org/
+
+## Usage
+
+--- data/templates/sql.st
+SELECT $column$ FROM $table$
+---
+
+(def *template (load-template "data/templates" "sql")) ;; 
+
+(render-template *template {"column" "name" "table" "students"})
+
+=> "SELECT name FROM students"
+
+(def *demplate (update-template *template {"table" "employees"}))
+
+(render-template *demplate {"column" "name"})
+ 
+=> "SELECT name FROM employees"
+
+(render-template *template {"column" "name"})
+
+=> "SELECT name FROM "
+
+(render-template *demplate {"column" "name" "table" "students"})
+
+=> "SELECT name FROM employeesstudents"
+
+## Installation
+
+leiningen
+
+[stringtemplate-clj "0.1.0"]
+
+maven
+
+<dependency>
+  <groupId>stringtemplate-clj</groupId>
+  <artifactId>stringtemplate-clj</artifactId>
+  <version>0.1.0</version>
+</dependency>
+
+## License
+
+Copyright (C) 2010 Sidhant Godiwala
+
+Distributed under the Eclipse Public License, the same as Clojure.
