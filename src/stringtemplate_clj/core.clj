@@ -6,9 +6,14 @@
 (def search-paths (ref []))
 (def templates (ref {}))
 
-(defn add-path [path]
-  (dosync
-    (alter search-paths conj path)))
+(defn add-path 
+  ([path] (dosync (alter search-paths conj path)))
+  ([path & xp]
+    (loop [head path tail xp]
+      (dosync (alter search-paths conj head))
+      (if tail
+        (recur (first tail) (next tail))
+        @search-paths))))
 
 (defn search-template [file]
   (first (filter #(fs/exists? (clojure.string/join [% file ".st"])) @search-paths)))
